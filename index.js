@@ -66,6 +66,10 @@ if(body.pass===mystr){
     
     
 });
+app.get('/',(req,res)=>{
+   
+    res.send("Hello")
+})
 app.get('/Getdata',(req,res)=>{
    
     EmployeeModel.find({}).select({"_id":0,"EmpId":1,"EmpName":1,"EmpDesignation":1,"EmployeeDQ":1}).then((data)=>{
