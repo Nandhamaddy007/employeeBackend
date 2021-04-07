@@ -27,6 +27,7 @@ var loc='mongodb+srv://nandhagopal:NandhaAdmin01!@mydb.4lyfk.gcp.mongodb.net/Emp
         useUnifiedTopology: true }, function(error) {
             if (error) {
                 console.log("Error! " + error);
+                res.send('Error!!!')
             }
             
        
@@ -41,6 +42,7 @@ app.post('/login', (req, res) => {
     EmployeeModel.findOne({user:{$eq:body.user}},function(err,data){
         if(err){
             console.log("Error: "+err)
+            res.send('Error!!!')
         }else{
            
           if(data!==null){
@@ -82,6 +84,7 @@ app.get('/Getdata/:id',(req,res)=>{
    EmployeeModel.findOne({"EmpId":{$eq:req.params.id}},function(err,data){
        if(err){
            console.log(err)
+           res.send('Error!!!')
        }else{
            if(data!==null){               
            res.send(
