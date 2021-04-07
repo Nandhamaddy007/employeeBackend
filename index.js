@@ -27,7 +27,7 @@ var loc='mongodb+srv://nandhagopal:NandhaAdmin01!@mydb.4lyfk.gcp.mongodb.net/Emp
         useUnifiedTopology: true }, function(error) {
             if (error) {
                 console.log("Error! " + error);
-                res.send('Error!!!')
+               
             }
             
        
