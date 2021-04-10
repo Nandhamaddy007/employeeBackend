@@ -36,6 +36,11 @@ var loc='mongodb+srv://nandhagopal:NandhaAdmin01!@mydb.4lyfk.gcp.mongodb.net/Emp
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors());
+app.use(function(req, res, next) {
+	  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	  next();
+	});
 app.post('/login', (req, res) => {
     var body=JSON.parse(req.body.body)
     var mystr ;
@@ -108,9 +113,6 @@ app.get('/Getdata/:id',(req,res)=>{
    })
 })
 
-app.patch('/UpdateEmployee',(req,res)=>{
-
-})
 
 app.delete('/DeleteEmployee/:id',(req,res)=>{
     EmployeeModel.findOneAndRemove({"EmpId":{$eq:req.params.id}},function(err,data){
