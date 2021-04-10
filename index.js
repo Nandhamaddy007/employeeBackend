@@ -3,7 +3,6 @@ const cors = require('cors')
 const bodyParser=require('body-parser')
 const mongoose=require('mongoose');
 var crypto=require('crypto')
-const express = require('express');
 const app = express();
 
 var EmployeeSchema=new mongoose.Schema({
