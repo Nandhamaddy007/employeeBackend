@@ -36,7 +36,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors());
 app.use(function(req, res, next) {
-	  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+	  res.header("Access-Control-Allow-Origin","https://employeemanagement.nandhagopalmadd.repl.co");
 	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	  next();
 	});
@@ -76,6 +76,19 @@ app.get('/',(req,res)=>{
    
     res.send("Hello")
 })
+app.get('/GetLastId',(req,res)=>{
+   
+    EmployeeModel.find({}).select({"_id":0,"EmpId":1}).then((data)=>{
+      var arr=[]
+        data.forEach(function(obj,ind){
+            arr.push(obj.EmpId)
+        })
+        let m=Math.max(...arr)
+        console.log(m)
+            res.send({"last":m})
+    })
+    
+})
 app.get('/Getdata',(req,res)=>{
    
     EmployeeModel.find({}).select({"_id":0,"EmpId":1,"EmpName":1,"EmpDesignation":1,"EmployeeDQ":1}).then((data)=>{
@@ -85,6 +98,7 @@ app.get('/Getdata',(req,res)=>{
     
 })
 app.get('/Getdata/:id',(req,res)=>{
+  
    EmployeeModel.findOne({"EmpId":{$eq:req.params.id}},function(err,data){
        if(err){
            console.log(err)
