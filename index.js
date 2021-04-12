@@ -15,6 +15,7 @@ var EmployeeSchema=new mongoose.Schema({
     EmployeeCab:Boolean,
     EmployeeDQ:Number,
     EmployeeCerts:String,
+    EmpQualification:String,
     user:String,
     pass:String
 })
@@ -115,6 +116,7 @@ app.get('/Getdata/:id',(req,res)=>{
                 EmployeeCab:data.EmployeeCab,
                 EmployeeDQ:data.EmployeeDQ,
                 EmployeeCerts:data.EmployeeCerts,
+                EmpQualification:data.EmpQualification,
                 user:data.user
                 }
            )
@@ -155,6 +157,7 @@ var newEmployee= new EmployeeModel({
     EmployeeCab:req.body.EmployeeCab,
     EmployeeDQ:req.body.EmployeeDQ,
     EmployeeCerts:req.body.EmployeeCerts,
+    EmpQualification:req.body.EmpQualification,
     user:req.body.user,
     pass:this.password
 })
