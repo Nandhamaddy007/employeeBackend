@@ -16,8 +16,9 @@ var EmployeeSchema=new mongoose.Schema({
     EmployeeDQ:Number,
     EmployeeCerts:String,
     EmpQualification:String,
-    user:String,
-    pass:String
+    EmpDOB:String,
+    User:String,
+    Pass:String
 })
 var EmployeeModel= mongoose.model('EmployeeDetails',EmployeeSchema)
 var loc='mongodb+srv://nandhagopal:NandhaAdmin01!@mydb.4lyfk.gcp.mongodb.net/EmployeeDatabase?retryWrites=true&w=majority'
@@ -37,26 +38,32 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors());
 app.use(function(req, res, next) {
-	  res.header("Access-Control-Allow-Origin","https://employeemanagementfront.herokuapp.com");
+  let repl='https://employeemanagement.nandhagopalmadd.repl.co'
+  let heroku="https://employeemanagementfront.herokuapp.com"
+  let sand='https://3cgul.csb.app'
+  let git='https://nandhamaddy007.github.io'
+	  //res.header("Access-Control-Allow-Origin",heroku);
+    res.header("Access-Control-Allow-Origin","*");
 	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	  next();
 	});
 app.post('/login', (req, res) => {
     var body=JSON.parse(req.body.body)
+    console.log(body)
     var mystr ;
-    EmployeeModel.findOne({user:{$eq:body.user}},function(err,data){
+    EmployeeModel.findOne({User:{$eq:body.User}},function(err,data){
         if(err){
             console.log("Error: "+err)
             res.send('Error!!!')
         }else{
-           
+           console.log(data)
           if(data!==null){
-            var mykey = crypto.createDecipher('aes-128-cbc', body.user+"@#$%^&*()");
-     mystr = mykey.update(data.pass, 'hex', 'utf8')
+            var mykey = crypto.createDecipher('aes-128-cbc', body.User+"@#$%^&*()");
+     mystr = mykey.update(data.Pass, 'hex', 'utf8')
     mystr += mykey.final('utf8');
-//    console.log(mystr);
-if(body.pass===mystr){
-    if(body.user=='Admin'){
+    console.log("passwd:"+mystr);
+if(body.Pass===mystr){
+    if(body.User=='Admin'){
         res.send({token:"Admin",code:"good"})
     }else{
         res.send({token:"Employee",code:"good"})
@@ -85,7 +92,7 @@ app.get('/GetLastId',(req,res)=>{
             arr.push(obj.EmpId)
         })
         let m=Math.max(...arr)
-        console.log(m)
+        //console.log(m)
             res.send({"last":m})
     })
     
@@ -115,9 +122,10 @@ app.get('/Getdata/:id',(req,res)=>{
                 EmpAddress:data.EmpAddress,
                 EmployeeCab:data.EmployeeCab,
                 EmployeeDQ:data.EmployeeDQ,
+                EmpDOB:data.EmpDOB,
                 EmployeeCerts:data.EmployeeCerts,
                 EmpQualification:data.EmpQualification,
-                user:data.user
+                User:data.user
                 }
            )
            }else{
@@ -140,10 +148,11 @@ app.delete('/DeleteEmployee/:id',(req,res)=>{
 })
 
 app.post('/AddEmployee',(req,res)=>{
-    //console.log(mongoose.connection.readyState);
-    //console.log(req.body.pass)
-    var mykey = crypto.createCipher('aes-128-cbc', req.body.user+"@#$%^&*()");
-    var mystr = mykey.update(req.body.pass, 'utf8', 'hex')
+    //console.log(req.body)
+    req.body=JSON.parse(req.body.body)
+    //console.log(req.body)
+    var mykey = crypto.createCipher('aes-128-cbc', req.body.User+"@#$%^&*()");
+    var mystr = mykey.update(req.body.Pass, 'utf8', 'hex')
     mystr += mykey.final('hex');
     this.password=mystr
     //console.log(this.password)
@@ -152,14 +161,15 @@ var newEmployee= new EmployeeModel({
     EmpName:req.body.EmpName,
     EmpDesignation:req.body.EmpDesignation,
     EmpMail:req.body.EmpMail,
+    EmpDOB:req.body.EmpDOB,
     EmpContactNumber:req.body.EmpContactNumber,
     EmpAddress:req.body.EmpAddress,
     EmployeeCab:req.body.EmployeeCab,
     EmployeeDQ:req.body.EmployeeDQ,
     EmployeeCerts:req.body.EmployeeCerts,
     EmpQualification:req.body.EmpQualification,
-    user:req.body.user,
-    pass:this.password
+    User:req.body.User,
+    Pass:this.password
 })
 newEmployee.save(function(err,data){
         if(err){
